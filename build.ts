@@ -3,6 +3,7 @@ import path from 'path'
 
 build({
   root: path.join(import.meta.dirname, 'app'),
+  base: '/bomb-editor/',
 
   build: {
     outDir: path.join(import.meta.dirname, 'dist'),
