@@ -1,9 +1,11 @@
 import { get_current_tile_type } from './tiles.js'
+import { Light } from './light.mjs'
 
 import src_ground_light from '../images/ground_light.png'
 import src_ground_dark from '../images/ground_dark.png'
 import src_player from '../images/player.png'
 import src_barrel from '../images/barrel.png'
+import src_rock2 from '../images/rock2.png'
 import src_rock from '../images/rock.png'
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement
@@ -34,6 +36,7 @@ const TILE_TYPES: { [key: string]: { image: HTMLImageElement, max: number }} = {
 
   barrel: { image: load_image(src_barrel), max: Infinity },
   rock: { image: load_image(src_rock), max: Infinity },
+  rock2: { image: load_image(src_rock2), max: Infinity },
 
   player: { image: load_image(src_player), max: 4 }
 }
@@ -96,6 +99,22 @@ function save_map (): { type: string, x: number, y: number }[] {
   })
 
   return tiles
+}
+
+// Export The Map As An Image
+function export_map_as_image (): void {
+  canvas.toBlob((blob) => {
+    const url = URL.createObjectURL(blob!)
+
+    const download = Light.createElement('a', {
+      href: url,
+      download: 'image.png'
+    }) 
+
+    download.click()
+
+    URL.revokeObjectURL(url)
+  })
 }
 
 // Get Tile Amount
@@ -201,4 +220,4 @@ window.addEventListener('mouseup', () => {
   place_mode = undefined
 })
 
-export { set_map_size, set_explod_range, load_map, save_map, TILE_TYPES }
+export { set_map_size, set_explod_range, load_map, save_map, export_map_as_image, TILE_TYPES }

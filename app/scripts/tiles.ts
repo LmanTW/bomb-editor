@@ -2,6 +2,7 @@ import { Light } from './light.mjs'
 
 import src_player from '../images/player.png'
 import src_barrel from '../images/barrel.png'
+import src_rock2 from '../images/rock2.png'
 import src_rock from '../images/rock.png'
 
 const tiles = document.getElementById('tiles') as HTMLDivElement
@@ -12,6 +13,7 @@ const PLACEABLE_TILES: { [key: string]: string } = {
   player: src_player,
   barrel: src_barrel,
   rock: src_rock,
+  rock2: src_rock2
 }
 
 for (const tile_name of Object.keys(PLACEABLE_TILES)) {

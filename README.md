@@ -3,4 +3,4 @@
 
 * 編輯器網址：https://lmantw.github.io/bomb-editor/
 
-![The guide](./assets/images/guide.png)
+![the guide](./assets/images/guide.png)

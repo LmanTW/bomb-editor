@@ -43,8 +43,13 @@ for (const field_name of Object.keys(fields_info)) {
 function load_fields (fields: { [key: string]: number }): void {
   for (const field_name of Object.keys(fields_info)) {
     const input = document.getElementById(fields_info[field_name].input) as HTMLInputElement
+    const value = (fields[field_name] === undefined) ? fields_info[field_name].default : fields[field_name]
 
-    input.value = ((fields[field_name] === undefined) ? fields_info[field_name].default : fields[field_name]).toString()
+    input.value = value.toString()
+
+    if (field_name === 'bomb_explode_range') set_explod_range(value)
+    else if (field_name === 'width') set_map_size(value, undefined)
+    else if (field_name === 'height') set_map_size(undefined, value)
   }
 }
 
