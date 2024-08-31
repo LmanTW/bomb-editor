@@ -48,7 +48,7 @@ function update_canvas_size (): void {
   canvas.width = rect.width
   canvas.height = rect.height
 
-  calculate_tile_size()
+  calculate_tile_size(canvas)
 }
 
 // Set The Size Of The Map
@@ -61,7 +61,7 @@ function set_map_size (width: undefined | number, height: undefined | number): v
     else background_tiles.push('ground_light')
   }
 
-  calculate_tile_size()
+  calculate_tile_size(canvas)
 }
 
 // Set The Range Of The Explosion
@@ -70,7 +70,7 @@ function set_explod_range (range: number): void {
 }
 
 // Calculate The Tile Size
-function calculate_tile_size (): void {
+function calculate_tile_size (canvas: HTMLCanvasElement): void {
   if (canvas.width > canvas.height) tile_size = canvas.width / (size.width + 1)
   else tile_size = canvas.height / (size.height + 1)
 
@@ -103,12 +103,24 @@ function save_map (): { type: string, x: number, y: number }[] {
 
 // Export The Map As An Image
 function export_map_as_image (): void {
-  canvas.toBlob((blob) => {
+  const local_canvas = document.createElement('canvas')
+  const local_ctx = local_canvas.getContext('2d')!
+
+  local_canvas.width = 750
+  local_canvas.height = 500
+
+  calculate_tile_size(local_canvas)
+
+  render(local_canvas, local_ctx, false)
+
+  calculate_tile_size(canvas)
+
+  local_canvas.toBlob((blob) => {
     const url = URL.createObjectURL(blob!)
 
     const download = Light.createElement('a', {
       href: url,
-      download: 'image.png'
+      download: 'map.png'
     }) 
 
     download.click()
@@ -128,7 +140,8 @@ function get_tile_amount (type: string): number {
   return amount
 }
 
-setInterval(() => {
+// Render The Map
+function render (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, cursor: boolean): void {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   ctx.fillStyle = 'rgba(255, 0, 0, 0.1)'
@@ -174,7 +187,7 @@ setInterval(() => {
         }
       }
 
-      if (Math.round(((mouse.x - (tile_size / 2)) - render_offset_x) / tile_size) === x && Math.round(((mouse.y - (tile_size / 2)) - render_offset_y) / tile_size) === y) {
+      if (cursor && Math.round(((mouse.x - (tile_size / 2)) - render_offset_x) / tile_size) === x && Math.round(((mouse.y - (tile_size / 2)) - render_offset_y) / tile_size) === y) {
         ctx.filter = 'opacity(0.5)'
 
         const current_tile_type = get_current_tile_type()
@@ -204,7 +217,9 @@ setInterval(() => {
   ctx.fill()
 
   ctx.beginPath()
-}, 1000 / 30)
+}
+
+setInterval(() => render(canvas, ctx, true), 1000 / 30)
 
 setTimeout(update_canvas_size, 10)
 

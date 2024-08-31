@@ -1,5 +1,6 @@
 import { load_map, save_map, export_map_as_image } from './map.js'
 import { load_fields, save_fields } from './fields.js'
+import { export_tileset_as_image } from './tileset.js'
 import { Light } from './light.mjs'
 
 new Light(document.body)
@@ -7,7 +8,8 @@ new Light(document.body)
 const canvas = document.getElementById('canvas')!
 const button_load = document.getElementById('button_load')!
 const button_save = document.getElementById('button_save')!
-const button_export_as_image = document.getElementById('button_export_as_image')!
+const button_map_export_as_image = document.getElementById('button_map_export_as_image')!
+const button_tileset_export_as_image = document.getElementById('button_tileset_export_as_image')!
 
 let file_name!: string
 
@@ -88,4 +90,5 @@ button_save.addEventListener('click', () => {
   URL.revokeObjectURL(url)
 })
 
-button_export_as_image.addEventListener('click', export_map_as_image)
+button_map_export_as_image.addEventListener('click', export_map_as_image)
+button_tileset_export_as_image.addEventListener('click', export_tileset_as_image)
